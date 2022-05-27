@@ -24,7 +24,7 @@ class MyDrawer extends StatelessWidget {
                   ]),
             ),
           ),
-          ...(GlobalParams.menus_administration as List).map((item) {
+          ...(GlobalParams.menus as List).map((item) {
             return Column(children: [
               ListTile(
                 title: Text(

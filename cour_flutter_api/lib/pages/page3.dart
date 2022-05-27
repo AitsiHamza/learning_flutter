@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cour_flutter_api/pages/User.dart';
+import 'package:cour_flutter_api/widgets/details.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,9 +31,10 @@ class Page3 extends StatefulWidget {
 }
 
 class _Page3State extends State<Page3> {
+  var results=10;
   Future<List<User>> _getUsers() async {
     var data =
-    await http.get(Uri.https('randomuser.me', 'api', {'results': '10'}));
+    await http.get(Uri.https('randomuser.me', 'api', {'results': '${results}'}));
 
     var jsonData = json.decode(data.body);
 
@@ -49,12 +51,8 @@ class _Page3State extends State<Page3> {
           u["email"],
           u["phone"],
           u["picture"]["medium"]);
-
       users.add(user);
     }
-
-    print(users.length);
-
     return users;
   }
 
@@ -68,7 +66,6 @@ class _Page3State extends State<Page3> {
         child: FutureBuilder(
           future: _getUsers(),
           builder: (BuildContext context, AsyncSnapshot snapshot){
-            print(snapshot.data);
             if(snapshot.data == null){
               return Container(
                   child: Center(
@@ -79,7 +76,7 @@ class _Page3State extends State<Page3> {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card (child:ListTile(
+                  return Card (color: Colors.tealAccent,child:ListTile(
                     leading: CircleAvatar(backgroundImage:
                     NetworkImage(snapshot.data[index].picture)),
                     title: Text(snapshot.data[index].name),
@@ -101,18 +98,3 @@ class _Page3State extends State<Page3> {
 }
 
 
-class DetailPage extends StatelessWidget {
-
-  final User user;
-
-  DetailPage(this.user);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(user.name),
-        )
-    );
-  }
-}
